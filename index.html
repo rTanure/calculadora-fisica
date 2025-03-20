@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de Distância</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        h2 {
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+        input {
+            padding: 8px;
+            width: 100px;
+            margin-left: 10px;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 15px;
+            border: none;
+            background: #007BFF;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        h3 {
+            margin-top: 15px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Calculadora de Distância</h2>
+        <label>Comprimento de Onda (nm): <input type="text" id="comprimentoOnda" step="any" value="700"></label>
+        <label>Distância até o Alvo (m): <input type="text" id="distanciaAlvo" step="any"></label>
+        <label>Quantidade de Vales: <input type="text" id="quantidadeVales" step="any"></label>
+        <label>Distância Medida (cm): <input type="text" id="distanciaMedida" step="any"></label>
+        <button onclick="calcularDistancia()">Calcular</button>
+        <h3>Resultado: <span id="resultado"></span></h3>
+    </div>
+    
+    <script>
+        function calcularDistancia() {
+            let comprimentoOnda = parseFloat(document.getElementById('comprimentoOnda').value) * Math.pow(10, -9);
+            let distanciaAlvo = parseFloat(document.getElementById('distanciaAlvo').value);
+            let quantidadeVales = parseFloat(document.getElementById('quantidadeVales').value);
+            let distanciaMedida = parseFloat(document.getElementById('distanciaMedida').value) * Math.pow(10, -2);
+
+            if (isNaN(comprimentoOnda) || isNaN(distanciaAlvo) || isNaN(quantidadeVales) || isNaN(distanciaMedida) || quantidadeVales === 0) {
+                document.getElementById('resultado').textContent = "Por favor, insira valores válidos.";
+                document.getElementById('resultadoCientifico').textContent = "";
+                return;
+            }
+
+            let distanciaEntreVales = distanciaMedida / quantidadeVales;
+            let d = (comprimentoOnda * distanciaAlvo) / distanciaEntreVales;
+            document.getElementById('resultado').textContent = formatarNotacaoCientifica(d) + " m";
+        }
+
+        function formatarNotacaoCientifica(valor) {
+            let exp = Math.floor(Math.log10(Math.abs(valor)));
+            let mantissa = valor / Math.pow(10, exp);
+            return mantissa.toFixed(3) + " * 10^" + exp;
+        }
+    </script>
+</body>
+</html>
